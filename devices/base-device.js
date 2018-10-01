@@ -10,8 +10,30 @@ const EventEmitter = require("events");
  */
 
 /**
+ * @typedef {Object} EncoderChannel
+ * @property {Number} channel The "channel" of this encoder
+ * @property {Number} value
+ */
+
+/**
+ * @typedef {Object} GyroChannel
+ * @property {Number} channel The "channel" of this gyro
+ * @property {Number} xValue The current value of the x-axis
+ * @property {Number} yValue The current value of the y-axis
+ * @property {Number} zValue The current value of the z-axis
+ */
+
+/**
+ * @typedef {Object} AccelerometerChannel
+ * @property {Number} channel The "channel" of this accelerometer
+ * @property {Number} xValue The current value of the x-axis
+ * @property {Number} yValue The current value of the y-axis
+ * @property {Number} zValue The current value of the z-axis
+ */
+
+/**
  * Base REPBot device
- * 
+ *
  * This class provides the list of methods and properties that
  * more specialized devices should implement
  * @class
@@ -70,7 +92,38 @@ class BaseDevice extends EventEmitter {
     }
 
     /**
-     * Configure a digital pin 
+     * Returns an array of Encoder channels
+     * @property
+     * @return {EncoderChannel[]}
+     */
+    get encoderChannels() {
+        throw new Error("Call to abstract encoderChannels");
+    }
+
+    /**
+     * Returns an array of Gyro channels
+     * @property
+     * @return {GyroChannel[]}
+     */
+    get gyroChannels() {
+        throw new Error("Call to abstract gyroChannels");
+    }
+
+    /**
+     * Returns an array of Accelerometer channels
+     * @property
+     * @return {AccelerometerChannel[]}
+     */
+    get accelerometerChannels() {
+        throw new Error("Call to abstract accelerometerChannels");
+    }
+
+    get batteryMV() {
+        throw new Error("Call to abstract batteryMV");
+    }
+
+    /**
+     * Configure a digital pin
      * @param {Number} pin Pin to configure
      * @param {Number} mode Pin mode (INPUT, OUTPUT, PULLUP) to set
      */
@@ -116,6 +169,26 @@ class BaseDevice extends EventEmitter {
     // Set up servo with specific min/max pulse
     servoConfig(pin, min, max) {
         throw new Error("Call to abstract servoConfig");
+    }
+
+    encoderRead(channel) {
+        throw new Error("Call to abstract encoderRead");
+    }
+
+    encoderReset(channel) {
+        throw new Error("Call to abstract encoderReset");
+    }
+
+    gyroRead(channel) {
+        throw new Error("Call to abstract gyroRead");
+    }
+
+    accelerometerRead(channel) {
+        throw new Error("Call to abstract accelerometerRead");
+    }
+
+    shutdown() {
+        throw new Error("Call to abstract shutdown");
     }
 }
 
