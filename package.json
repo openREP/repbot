@@ -1,0 +1,24 @@
+{
+  "name": "repbot",
+  "version": "1.0.0",
+  "description": "Robotics Experimentation Platform Bot",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openREP/repbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/openREP/repbot/issues"
+  },
+  "homepage": "https://github.com/openREP/repbot#readme",
+  "dependencies": {
+    "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5",
+    "firmata": "^1.0.0"
+  }
+}
