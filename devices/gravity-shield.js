@@ -4,6 +4,16 @@ const Board = require("firmata");
 
 const MODES = Constants.MODES;
 
+/**
+ * GravityShield device
+ * 
+ * This represents a DFRobot Arduino compatible HAT for a Raspberry Pi
+ * that provides an Arduino Leornado, connected to the RPi via USB serial.
+ * 
+ * This device requires that the StandardFirmata firmware is uploaded to 
+ * the HAT.
+ */
+
 // Port maps for this particular device
 const DIGITAL_PORT_MAP = [2, 3, 4, 5, 6, 7];
 const INVERSE_DIGITAL_PORT_MAP = { 2: 0, 3: 1, 4: 2, 5: 3, 6: 4, 7: 5};
@@ -207,7 +217,7 @@ class GravityShield extends BaseDevice {
 
         return result;
     }
-
+    
     _generateAnalogPinInfo() {
         const result = [];
         for (var logicalPin in this._internalAnalogPins) {
