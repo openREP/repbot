@@ -4,7 +4,8 @@ const PinModes = Object.freeze({
     ANALOG: 0x02,
     PWM: 0x03,
     SERVO: 0x04,
-    PULLUP: 0x0B
+    PULLUP: 0x0B,
+    ENCODER: 0xAA
 });
 
 module.exports = {

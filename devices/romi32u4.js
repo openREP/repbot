@@ -31,11 +31,6 @@ const PORTMAP = {
         type: "input",
         channel: 5
     },
-    "battery": {
-        port: "battery",
-        type: "analog",
-        channel: 6
-    },
     "a0": {
         port: "a0",
         type: "analog",
@@ -66,6 +61,11 @@ const PORTMAP = {
         type: "analog",
         channel: 5
     },
+    "battery": {
+        port: "battery",
+        type: "analog",
+        channel: 6
+    },
     "motor-left": {
         port: "motor-left",
         type: "pwm",
@@ -92,11 +92,32 @@ const BUFFER_STRUCTURE = [
     { portName: "led-yellow", direction: "out", dataType: "boolean" },
     { portName: "led-red", direction: "out", dataType: "boolean" },
     { portName: "led-green", direction: "out", dataType: "boolean" },
+    { portName: "button-a", direction: "in", dataType: "boolean" },
+    { portName: "button-b", direction: "in", dataType: "boolean" },
+    { portName: "button-c", direction: "in", dataType: "boolean" },
+    { portName: "battery", direction: "in", dataType: "uint16" },
+    { portName: "a0", direction: "in", dataType: "uint16" },
+    { portName: "a1", direction: "in", dataType: "uint16" },
+    { portName: "a2", direction: "in", dataType: "uint16" },
+    { portName: "a3", direction: "in", dataType: "uint16" },
+    { portName: "a4", direction: "in", dataType: "uint16" },
+    { portName: "a5", direction: "in", dataType: "uint16" },
+    { portName: "motor-left", direction: "out", dataType: "int16" },
+    { portName: "motor-right", direction: "out", dataType: "int16" },
+    { flagName: "encoder-left-reset", direction: "out", dataType: "boolean" },
+    { flagName: "encoder-right-reset", direction: "out", dataType: "boolean" },
+    { portName: "encoder-left", direction: "in", dataType: "int16" },
+    { portName: "encoder-right", direction: "in", dataType: "int16" }
 ];
 
 class Romi32u4 extends AstarI2cBase {
     constructor(config) {
         // Set up the portmap and buffer structure
+        config.portMap = PORTMAP;
+        config.bufferStructure = BUFFER_STRUCTURE;
 
+        super(config);
     }
 }
+
+module.exports = Romi32u4;
