@@ -253,7 +253,7 @@ function wordToInt(word) {
             throw new Error("Port name '" + portName + "' not found in buffer map");
         }
 
-        const buferOffset = bufferOffsetInfo.offset;
+        const bufferOffset = bufferOffsetInfo.offset;
         this._i2c.writeWordSync(this._address, bufferOffset, (speed & 0xFFFF));
     }
 
