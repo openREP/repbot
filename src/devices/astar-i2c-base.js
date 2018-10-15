@@ -1,6 +1,7 @@
 const BaseDevice = require("./base-device");
 const Constants = require("./constants");
 const i2c = require("i2c-bus");
+const Util = require("../utils");
 
 const MODES = Constants.MODES;
 
@@ -246,6 +247,21 @@ function wordToInt(word) {
             throw new Error("Invalid Motor channel: " + channel);
         }
 
+        if (speed < -100) speed = -100;
+        if (speed > 100) speed = 100;
+
+        let outputMin = -100;
+        let outputMax = 100;
+
+        if (motorChInfo.outputScale) {
+            if (motorChInfo.outputScale.min !== undefined) {
+                outputMin = motorChInfo.outputScale.min;
+            }
+            if (motorChInfo.outputScale.max !== undefined) {
+                outputMax = motorChInfo.outputScale.max;
+            }
+        }
+
         const portName = motorChInfo.devicePin;
         const bufferOffsetInfo = this._bufferMap[portName];
 
@@ -253,8 +269,10 @@ function wordToInt(word) {
             throw new Error("Port name '" + portName + "' not found in buffer map");
         }
 
+        const actualSpeed = Util.mapValues(speed, -100, 100, outputMin, outputMax);
+
         const bufferOffset = bufferOffsetInfo.offset;
-        this._i2c.writeWordSync(this._address, bufferOffset, (speed & 0xFFFF));
+        this._i2c.writeWordSync(this._address, bufferOffset, (actualSpeed & 0xFFFF));
     }
 
     encoderRead(channel) {
@@ -549,7 +567,8 @@ function wordToInt(word) {
                         this._internalMotorChannels[portInfo.channel] = {
                             devicePin: data.portName,
                             mode: portInfo.type,
-                            value: 0
+                            value: 0,
+                            outputScale: portInfo.outputScale || {} 
                         };
                         break;
                     case "encoder":

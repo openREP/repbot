@@ -1,4 +1,5 @@
 const EventEmitter = require("events");
+const Util = require("./utils");
 
 const DEVICE_TYPES = {
     "gravity-shield": "gravity-shield",
@@ -59,9 +60,6 @@ var config ={
 }
 */
 
-function mapValues(x, inMin, inMax, outMin, outMax) {
-    return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
-}
 
 class RepBot extends EventEmitter {
     constructor(config) {
@@ -164,7 +162,7 @@ class RepBot extends EventEmitter {
         if (speed > 100) speed = 100;
 
         // convert -100 to 100 -> 0 to 180
-        const angle = Math.round(mapValues(speed, -100, 100, 0, 180));
+        const angle = Math.round(Util.mapValues(speed, -100, 100, 0, 180));
 
         if (chInfo.type === "motor") {
             device.servoWrite(chInfo.deviceChannel, angle);

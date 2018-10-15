@@ -161,12 +161,20 @@ const DEFAULT_CONFIG = {
         "motor-left": {
             port: "motor-left",
             type: "motor",
-            channel: 0
+            channel: 0,
+            outputScale: {
+                min: -300,
+                max: 300
+            }
         },
         "motor-right": {
             port: "motor-right",
             type: "motor",
-            channel: 1
+            channel: 1,
+            outputScale: {
+                min: -300,
+                max: 300
+            }
         },
         "servo-1": {
             port: "servo-1",
@@ -346,8 +354,25 @@ describe("A-Star I2C Base", () => {
 
     describe("motorWrite", () => {
         it("writes to the correct buffer position", () => {
-            board.motorWrite(0, -200);
-            // TODO implement test pls
+            board.motorWrite(0, 50);
+            // Actual speed is 150 (50% of 300)
+            const actualSpeed = 150;
+            const highByte = (actualSpeed >> 8) & 0xFF;
+            const lowByte = actualSpeed & 0xFF;
+            
+            expect(MockI2cBus.getBuffer(BOARD_ADDR)[6]).to.equal(highByte);
+            expect(MockI2cBus.getBuffer(BOARD_ADDR)[7]).to.equal(lowByte);
+        });
+
+        it("clamps the output accordingly", () => {
+            board.motorWrite(0, 200);
+
+            const actualSpeed = 300;
+            const highByte = (actualSpeed >> 8) & 0xFF;
+            const lowByte = actualSpeed & 0xFF;
+            
+            expect(MockI2cBus.getBuffer(BOARD_ADDR)[6]).to.equal(highByte);
+            expect(MockI2cBus.getBuffer(BOARD_ADDR)[7]).to.equal(lowByte);
         });
     });
 
