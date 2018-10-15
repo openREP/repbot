@@ -160,12 +160,22 @@ const DEFAULT_CONFIG = {
         },
         "motor-left": {
             port: "motor-left",
-            type: "pwm",
+            type: "motor",
             channel: 0
         },
         "motor-right": {
             port: "motor-right",
-            type: "pwm",
+            type: "motor",
+            channel: 1
+        },
+        "servo-1": {
+            port: "servo-1",
+            type: "servo",
+            channel: 0
+        },
+        "servo-2": {
+            port: "servo-2",
+            type: "servo",
             channel: 1
         },
         "encoder-left": {
@@ -189,6 +199,8 @@ const DEFAULT_CONFIG = {
         { portName: "battery", direction: "in", dataType: "uint16" },
         { portName: "motor-left", direction: "out", dataType: "int16" },
         { portName: "motor-right", direction: "out", dataType: "int16" },
+        { portName: "servo-1", direction: "out", dataType: "int16" },
+        { portName: "servo-2", direction: "out", dataType: "int16" },
         { flagName: "encoder-left-reset", direction: "out", dataType: "boolean" },
         { flagName: "encoder-right-reset", direction: "out", dataType: "boolean" },
         { portName: "encoder-left", direction: "in", dataType: "int16" },
@@ -236,7 +248,7 @@ describe("A-Star I2C Base", () => {
 
         mockery.registerMock("i2c-bus", MockI2cBus);
 
-        AstarBase = require("../devices/astar-i2c-base");
+        AstarBase = require("../src/devices/astar-i2c-base");
         board = new AstarBase(DEFAULT_CONFIG);
 
         // Reset the buffer
@@ -324,12 +336,19 @@ describe("A-Star I2C Base", () => {
         it("writes to the correct buffer position", () => {
             board.servoWrite(0, 90);
             // 6 and 7
-            expect(MockI2cBus.getBuffer(BOARD_ADDR).slice(6,8)).to.deep.equal([0, 90]);
+            expect(MockI2cBus.getBuffer(BOARD_ADDR).slice(10,12)).to.deep.equal([0, 90]);
         });
 
         it("throws if attempting to write to an invalid port", () => {
             expect(() => board.servoWrite(6, 90)).to.throw();
         })
+    });
+
+    describe("motorWrite", () => {
+        it("writes to the correct buffer position", () => {
+            board.motorWrite(0, -200);
+            // TODO implement test pls
+        });
     });
 
     describe("encoders", () => {
@@ -342,10 +361,10 @@ describe("A-Star I2C Base", () => {
             var lowByte2 = testValue2 & 0xFF;
             var highByte2 = (testValue2 >> 8) & 0xFF;
 
-            testBuffer[12] = highByte;
-            testBuffer[13] = lowByte;
-            testBuffer[14] = highByte2;
-            testBuffer[15] = lowByte2;
+            testBuffer[16] = highByte;
+            testBuffer[17] = lowByte;
+            testBuffer[18] = highByte2;
+            testBuffer[19] = lowByte2;
             MockI2cBus.setBuffer(BOARD_ADDR, testBuffer);
 
             setTimeout(() => {
@@ -357,8 +376,8 @@ describe("A-Star I2C Base", () => {
 
         it("should set the appropriate flags to reset encoders", () => {
             board.encoderReset(0);
-            expect(MockI2cBus.getBuffer(BOARD_ADDR)[10]).to.equal(1);
-            expect(MockI2cBus.getBuffer(BOARD_ADDR)[11]).to.equal(0);
+            expect(MockI2cBus.getBuffer(BOARD_ADDR)[14]).to.equal(1);
+            expect(MockI2cBus.getBuffer(BOARD_ADDR)[15]).to.equal(0);
         });
     });
 

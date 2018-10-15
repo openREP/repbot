@@ -171,6 +171,11 @@ class BaseDevice extends EventEmitter {
         throw new Error("Call to abstract servoConfig");
     }
 
+    // -100 to 100
+    motorWrite(channel, speed) {
+        throw new Error("Call to abstract motorWrite");
+    }
+
     encoderRead(channel) {
         throw new Error("Call to abstract encoderRead");
     }

@@ -54,7 +54,7 @@ describe("Romi32u4", () => {
         MockI2cBus.setBuffer(LSM6_ADDR, lsm6Buffer.slice(0));
 
 
-        Romi32u4 = require("../devices/romi32u4");
+        Romi32u4 = require("../src/devices/romi32u4");
         board = new Romi32u4({
             address: BOARD_ADDR
         });
