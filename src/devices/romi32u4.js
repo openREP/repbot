@@ -194,13 +194,21 @@ const PORTMAP = {
     },
     "motor-left": {
         port: "motor-left",
-        type: "pwm",
-        channel: 0
+        type: "motor",
+        channel: 0,
+        outputScale: {
+            min: -300,
+            max: 300
+        }
     },
     "motor-right": {
         port: "motor-right",
-        type: "pwm",
-        channel: 1
+        type: "motor",
+        channel: 1,
+        outputScale: {
+            min: -300,
+            max: 300
+        }
     },
     "encoder-left": {
         port: "encoder-left",
