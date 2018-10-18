@@ -1,6 +1,6 @@
 {
-  "name": "repbot",
-  "version": "1.0.0",
+  "name": "@openrep/repbot",
+  "version": "0.0.1",
   "description": "Robotics Experimentation Platform Bot",
   "main": "src/main.js",
   "scripts": {
