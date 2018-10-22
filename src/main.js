@@ -161,11 +161,8 @@ class RepBot extends EventEmitter {
         if (speed < -100) speed = -100;
         if (speed > 100) speed = 100;
 
-        // convert -100 to 100 -> 0 to 180
-        const angle = Math.round(Util.mapValues(speed, -100, 100, 0, 180));
-
         if (chInfo.type === "motor") {
-            device.motorWrite(chInfo.deviceChannel, angle);
+            device.motorWrite(chInfo.deviceChannel, speed);
         }
     }
 
