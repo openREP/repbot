@@ -267,9 +267,7 @@ describe("RepBot", () => {
 
         it("writes to the appropriate pwm port", () => {
             robot.motorWrite(0, 50);
-            // This translates to 135 degrees
-            // TODO For motors, we should probably have more precision
-            expect(MockI2cBus.getBuffer(ASTAR_ADDRESS).slice(20, 22)).to.deep.equal([0, 135]);
+            expect(MockI2cBus.getBuffer(ASTAR_ADDRESS).slice(20, 22)).to.deep.equal([0, 150]);
         })
     });
 })

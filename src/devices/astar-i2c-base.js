@@ -195,7 +195,7 @@ function wordToInt(word) {
         const bufferOffset = bufferOffsetInfo.offset;
         const dataLength = typeSize(bufferOffsetInfo.type);
 
-        this._i2c.writeByteSync(this._address, bufferOffset, (value ? 1 : 0));
+        this._safeWriteByteSync(this._address, bufferOffset, (value ? 1 : 0));
     }
 
     digitalRead(pin) {
@@ -238,7 +238,7 @@ function wordToInt(word) {
         }
 
         const bufferOffset = bufferOffsetInfo.offset;
-        this._i2c.writeWordSync(this._address, bufferOffset, degree);
+        this._safeWriteWordSync(this._address, bufferOffset, degree);
     }
 
     motorWrite(channel, speed) {
@@ -272,7 +272,7 @@ function wordToInt(word) {
         const actualSpeed = Util.mapValues(speed, -100, 100, outputMin, outputMax);
 
         const bufferOffset = bufferOffsetInfo.offset;
-        this._i2c.writeWordSync(this._address, bufferOffset, (actualSpeed & 0xFFFF));
+        this._safeWriteWordSync(this._address, bufferOffset, (actualSpeed & 0xFFFF));
     }
 
     encoderRead(channel) {
@@ -298,7 +298,7 @@ function wordToInt(word) {
         }
 
         const bufferOffset = bufferOffsetInfo.offset;
-        this._i2c.writeByteSync(this._address, bufferOffset, 1);
+        this._safeWriteByteSync(this._address, bufferOffset, 1);
     }
 
     gyroRead(channel) {
@@ -725,7 +725,23 @@ function wordToInt(word) {
         return result;
     }
 
+    _safeWriteByteSync(address, offset, data) {
+        try {
+            this._i2c.writeByteSync(address, offset, data);
+        }
+        catch (e) {
+            console.error("I2C Error: ", e);
+        }
+    }
 
+    _safeWriteWordSync(address, offset, data) {
+        try {
+            this._i2c.writeWordSync(address, offset, data);
+        }
+        catch (e) {
+            console.error("I2C Error: ", e);
+        }
+    }
  }
 
  module.exports = AstarI2cBase;
