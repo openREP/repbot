@@ -3,7 +3,8 @@ const Util = require("./utils");
 
 const DEVICE_TYPES = {
     "gravity-shield": "gravity-shield",
-    "romi": "romi32u4"
+    "romi": "romi32u4",
+    "debug": "debug-device"
 };
 
 /*
