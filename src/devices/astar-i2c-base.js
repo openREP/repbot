@@ -398,14 +398,15 @@ function wordToInt(word) {
 
         const bufferOffset = bufferOffsetInfo.offset;
         this._i2c.readWord(this._address, bufferOffset, (err, val) => {
-            // Depending on type
-            if (bufferOffsetInfo.dataType === "int16") {
-                this._internalAnalogPins[pin].value = wordToInt(val);
+            if (!err) {
+                // Depending on type
+                if (bufferOffsetInfo.dataType === "int16") {
+                    this._internalAnalogPins[pin].value = wordToInt(val);
+                }
+                else {
+                    this._internalAnalogPins[pin].value = wordToUint(val);
+                }
             }
-            else {
-                this._internalAnalogPins[pin].value = wordToUint(val);
-            }
-
         });
     }
 
@@ -417,7 +418,9 @@ function wordToInt(word) {
 
         const bufferOffset = bufferOffsetInfo.offset;
         this._i2c.readWord(this._address, bufferOffset, (err, val) => {
-            this._batteryReadingMV = wordToUint(val);
+            if (!err) {
+                this._batteryReadingMV = wordToUint(val);
+            }
         });
     }
 
@@ -436,7 +439,9 @@ function wordToInt(word) {
 
         const bufferOffset = bufferOffsetInfo.offset;
         this._i2c.readWord(this._address, bufferOffset, (err, val) => {
-            this._internalEncoderValues[channel].value = wordToInt(val);
+            if (!err) {
+                this._internalEncoderValues[channel].value = wordToInt(val);
+            }
         });
     }
 
@@ -568,7 +573,7 @@ function wordToInt(word) {
                             devicePin: data.portName,
                             mode: portInfo.type,
                             value: 0,
-                            outputScale: portInfo.outputScale || {} 
+                            outputScale: portInfo.outputScale || {}
                         };
                         break;
                     case "encoder":
